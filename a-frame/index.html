@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Display 3D Model in A-Frame with Movement Controls</title>
+  <!-- Include A-Frame library -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+</head>
+<body>
+  <!-- A-Frame Scene -->
+  <a-scene keyboard-shortcuts="wasd-controls-enabled: true">
+    <!-- Assets -->
+    <a-assets>
+      <!-- Load your GLB model -->
+      <a-asset-item id="matrica" src="matracis3.glb"></a-asset-item>
+    </a-assets>
+
+    <!-- Camera -->
+    <a-entity camera look-controls wasd-controls position="0 1.6 0"></a-entity>
+
+    <!-- Sky -->
+    <a-sky color="#d6ecf3"></a-sky>
+
+    <!-- Ground -->
+    <a-plane position="0 0 -4" rotation="-90 0 0" width="30" height="30" color="#402F1D"></a-plane>
+
+    <!-- Walls -->
+    <a-box color="#d6ecf3" position="0 2.5 5" width="10" height="5" depth="0.1"></a-box>
+    <a-box color="#d6ecf3" position="-5 2.5 0" width="0.1" height="5" depth="10"></a-box>
+    <a-box color="#d6ecf3" position="5 2.5 0" width="0.1" height="5" depth="10"></a-box>
+
+    <!-- Display GLB model -->
+    <a-entity gltf-model="#matrica" position="0 0 -3" ></a-entity>
+  </a-scene>
+</body>
+</html>
