@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no,maximum-scale=1">
+  <title>Collision</title>
+
+  <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
+  <script src="/scripts/cull.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/c-frame/aframe-extras@7.1.0/dist/aframe-extras.min.js"></script>
+  <script src="https://mixedreality.mozilla.org/ammo.js/builds/ammo.wasm.js"></script>
+  <script src="scripts/aframe-physics.min.js"></script>
+  <script src="scripts/navmesh.js"></script>
+</head>
+<body>
+  <a-scene physics="driver: ammo; debug: false; debugDrawMode: 1;">
+    <!-- Asset Management -->
+    <a-assets>
+      <a-asset-item id="skapis" src="NewAssets/skapis.glb"></a-asset-item>
+      <a-asset-item id="plakneobj" src="NewAssets/plaknefin.obj"></a-asset-item>
+      <audio id="backgroundAudio" src="NewAssets/skana.mp3"></audio>
+    </a-assets>
+
+    <!-- Visible Path (OBJ Model) -->
+    <a-entity obj-model="obj: #plakneobj" id="plakne" visible="false" rotation="0 -90 0"  scale="5 5 5"></a-entity>
+
+    <!-- GLB Model -->
+    <a-entity position="0 0 0" animation-mixer="clip: *;" gltf-model="#skapis" rotation="0 -90 0" scale="5 5 5"></a-entity>
+
+    <!-- Sky -->
+    <a-sky color="#ffffff" rotation="0 -90 0"></a-sky>
+
+    <!-- Lighting -->
+    <a-light type="ambient" color="#B29191" intensity="0.5"></a-light>
+
+    <!-- Camera and Navigation -->
+    <a-entity id="rig" movement-controls position="0 0 0">
+      <a-entity
+        id="camera"
+        camera
+        position="0 1 0"
+        look-controls
+        simple-navmesh-constraint="navmesh:#plakne;fall:1;height:1;"
+        fov="120"
+      >
+        <!-- Light following the camera -->
+        <a-light
+          type="point"
+          target="#rig"
+          scale="0 0 0"
+          position="0 1 0"
+          intensity="1"
+          color="#FFFFFF"
+        ></a-light>
+
+        <a-light
+        type="point"
+        scale="0 0 0"
+        position="0 0 -3"
+        intensity="0.5"
+        color="#FFFFFF"
+      ></a-light>
+
+        <!-- Collision Box -->
+        <a-box
+          ammo-body="type: kinematic"
+          ammo-shape="type: box"
+          position="0 0 0"
+          width="3"
+          height="3"
+          depth="3"
+        ></a-box>
+      </a-entity>
+    </a-entity>
+
+    <!-- Background Sound -->
+    <a-sound
+      id="backgroundAudio"
+      src="#backgroundAudio"
+      position="0 0 -6"
+      preload="auto"
+      autoplay="true"
+      loop="true"
+      volume="5.0"
+      maxDistance="Infinity"
+    ></a-sound>
+  </a-scene>
+
+  <script>
+    var audioElement = document.querySelector('#backgroundAudio');
+    audioElement.addEventListener('loadeddata', function() {
+      // The audio is loaded, you can now play it.
+      audioElement.play();
+    });
+  </script>
+</body>
+</html>
